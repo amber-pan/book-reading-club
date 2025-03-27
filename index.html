@@ -1,39 +1,302 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Book Reading Club</title>
+    <title>Kids Book Reading Club</title>
     <style>
-        body { font-family: Arial, sans-serif; margin: 20px; }
-        h1 { text-align: center; }
-        .carousel { display: flex; overflow-x: auto; gap: 10px; }
-        .carousel img { height: 200px; border-radius: 8px; }
-        .description { margin-top: 20px; }
-        .links { margin-top: 20px; }
-        .links a { display: block; margin: 5px 0; color: blue; text-decoration: none; }
-        .links a:hover { text-decoration: underline; }
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f9f9f9;
+            margin: 0;
+            padding: 0;
+            color: #333;
+        }
+
+        header {
+            background-color: #edf5f5;
+            padding: 40px;
+            font-size: large;
+            text-align: center;
+            color: rgb(26, 191, 227);
+        }
+
+        h1 {
+            margin: 0;
+            font-size: 2em;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 30px auto;
+            padding: 0 15px;
+        }
+
+        .carousel {
+            display: flex;
+            overflow-x: auto;
+            gap: 10px;
+            padding: 10px 0;
+        }
+
+        .carousel img {
+            height: 300px;
+            border-radius: 10px;
+            /* box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); */
+        }
+
+        .description {
+            background: #edf5f5;
+            padding: 15px;
+            border-radius: 8px;
+            /* box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05); */
+            margin-bottom: 20px;
+        }
+
+        .buttons a {
+            display: block;
+            text-align: center;
+            background-color: #00d34d;
+            color: white;
+            padding: 10px;
+            margin: 10px 0;
+            text-decoration: none;
+            border-radius: 6px;
+            transition: background-color 0.3s;
+        }
+
+        .buttons a:hover {
+            background-color: #126782;
+        }
+
+        footer {
+            text-align: center;
+            padding: 10px;
+            font-size: 0.9em;
+            color: #888;
+        }
     </style>
 </head>
+
+
 <body>
 
-    <h1>Book Reading Club</h1>
+    <header>
+        <!-- <h1>Kids Book Reading Club</h1> -->
+        <h1><span style="color: red;">Kids</span> Reading Club</h1>
+    </header>
 
-    <section class="carousel">
-        <!-- Add your photos by placing <img src="your-photo-path.jpg" alt=""> here -->
-    </section>
+    <!-- Photo Carousel -->
+<div class="carousel-container" id="carousel">
+    <img class="carousel-slide" src="photo1.jpg" alt="Photo 1">
+    <img class="carousel-slide" src="photo2.jpg" alt="Photo 2">
+    <img class="carousel-slide" src="photo3.jpg" alt="Photo 3">
+    <img class="carousel-slide" src="photo4.jpg" alt="Photo 4">
+    <img class="carousel-slide" src="photo5.jpg" alt="Photo 5">
+    <img class="carousel-slide" src="photo6.jpg" alt="Photo 6">
+       <!-- Dots -->
+       <div class="dots" id="dots"></div>
+</div>
 
-    <section class="description">
-        <h2>About Us</h2>
-        <p>We are a group of high school students passionate about helping children develop a love of reading and, in turn, improve their reading skills in the process. We host book-reading sessions at the Flower Mound Public Library, and you can get involved!</p>
-    </section>
+<style>
+    .carousel-container {
+        position: relative;
+        width: 100%;
+        max-width: 1200px;
+        height: 500px;
+        overflow: hidden;
+        margin: auto;
+        /* border-radius: 10px; */
+    }
 
-    <section class="links">
-        <h2>Get Involved</h2>
-        <a href="https://forms.gle/sCNDncTirfTsw58B8" target="_blank">Parent Sign Up for Elementary School Children</a>
-        <a href="https://forms.gle/kJejcaonpUbZ11EA7" target="_blank">High School Student Volunteer Sign Up</a>
-        <a href="https://forms.gle/A4FRtcziJ2mYFKHB7" target="_blank">Contact Form</a>
-    </section>
+    .carousel-slide {
+        width: 100%;
+        display: none;
+        border-radius: 10px;
+        opacity: 0;
+        transition:opacity 1s ease
+
+    }
+
+    .carousel-slide.active {
+        display: block;
+        opacity: 1;
+    }
+    /* Dots */
+    .dots {
+        position: absolute;
+        bottom: 10px;
+        left: 50%;
+        transform: translateX(-50%);
+        display: flex;
+        gap: 8px;
+    }
+
+    .dot {
+        width: 10px;
+        height: 10px;
+        border-radius: 50%;
+        background: rgba(255, 255, 255, 0.6);
+        cursor: pointer;
+        transition: background 0.3s;
+    }
+
+    .dot.active {
+        background: white;
+    }
+</style>
+
+<script>
+    
+    const slides = document.querySelectorAll('.carousel-slide');
+    const dotsContainer = document.getElementById('dots');
+
+    // Create dots
+    slides.forEach((_, i) => {
+        const dot = document.createElement('div');
+        dot.classList.add('dot');
+        dot.addEventListener('click', () => {
+            currentIndex = i;
+            showSlide(currentIndex);
+        });
+        dotsContainer.appendChild(dot);
+    });
+
+    const dots = document.querySelectorAll('.dot');
+
+    let currentIndex = 0;
+    // const slides = document.querySelectorAll('.carousel-slide');
+
+    function showSlide(index) {
+        slides.forEach((slide, i) => {
+            slide.classList.remove('active');
+            dots[i].classList.remove('active');
+            if (i === index) {
+                slide.classList.add('active');
+                dots[i].classList.add('active');
+            }
+        });
+    }
+
+    function nextSlide() {
+        currentIndex = (currentIndex + 1) % slides.length;
+        showSlide(currentIndex);
+    }
+
+
+
+    // Auto rotate every 2 seconds
+    setInterval(nextSlide, 2000);
+
+        // Swipe Support (Mobile)
+        let startX = 0;
+    const carousel = document.getElementById('carousel');
+
+    carousel.addEventListener('touchstart', (e) => {
+        startX = e.touches[0].clientX;
+    });
+
+    carousel.addEventListener('touchend', (e) => {
+        let endX = e.changedTouches[0].clientX;
+        if (startX - endX > 50) nextSlide();           // Swipe left
+        if (endX - startX > 50) {                     // Swipe right
+            currentIndex = (currentIndex - 1 + slides.length) % slides.length;
+            showSlide(currentIndex);
+        }
+    });
+
+    // Initialize
+    showSlide(currentIndex);
+</script>
+
+    <div class="container">
+
+        <!-- Description -->
+        <div class="description">
+            <h2>About Us</h2>
+            <style>
+                h2 {
+                    text-align: center;
+                    color: rgb(26, 191, 227);
+                }
+            </style>
+            
+            <p>We are a group of high school students passionate about sharing our love of reading with our community children and improving their reading skills in the process. We host Kids-reading sessions at the Flower Mound Public Library on Saturdays.</p>
+                 <p><strong>Like the cause? You can get involved!</strong></p>
+        </div>
+        <div class="buttons">
+            <div style="display: flex;justify-content: center; gap: 10px; flex-wrap: wrap;">
+                <a href="https://forms.gle/sCNDncTirfTsw58B8" target="_blank" style="
+                width: 100px; 
+                height: 100px; 
+                display: flex; 
+                align-items: center; 
+                justify-content: center; 
+                text-align: center;
+                border-radius: 50%;
+                background: #4CAF50; 
+                color: white; 
+                text-decoration: none;
+                font-size: 20px;
+                padding: 10px;
+                ">Sign Kids Up</a>
+    
+            </div>
+            <hr style="margin: 20px 0; border: none; border-top: 1px solid #ccc;">
+   
+        <div style="display: flex; justify-content: center; gap: 15px;">
+            <a href="https://forms.gle/kJejcaonpUbZ11EA7" target="_blank" style="
+                flex:1; 
+                border-radius: 25px; 
+                background: rgb(26, 191, 227); 
+                color: white; 
+                text-decoration: none; 
+                padding: 10px; 
+                text-align: center;">
+                Volunteer
+            </a>
+            
+            <a href="https://forms.gle/kJejcaonpUbZ11EA7" target="_blank" style="
+                flex:1; 
+                border-radius: 25px; 
+                background: rgb(26, 191, 227); 
+                color: white; 
+                text-decoration: none; 
+                padding: 10px; 
+                text-align: center;">
+                Donate
+            </a>
+        </div>
+        </div>
+           
+    
+        <hr style="margin: 20px 0; border: none;">
+   
+        <a href="https://forms.gle/A4FRtcziJ2mYFKHB7" target="_blank"> Questions?</a>
+        
+        <style>
+            body{
+                text-align: center;
+                font-size: large;
+            }
+            .container{
+                position: relative;
+        width: 100%;
+        max-width: 1200px;
+        height: auto;
+        overflow: hidden;
+        margin: auto;
+            }
+
+        </style>
+     
+
+
+    <footer>
+        © 2025 Kids Reading Club | Flower Mound, TX
+    </footer>
 
 </body>
+
 </html>
